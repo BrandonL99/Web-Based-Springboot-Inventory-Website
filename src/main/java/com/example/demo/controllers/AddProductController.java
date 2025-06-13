@@ -173,4 +173,19 @@ public class AddProductController {
         theModel.addAttribute("availparts",availParts);
         return "productForm";
     }
+    @GetMapping("/buyNow")
+    public String buyNow(@RequestParam("productID") int theId, Model theModel) {
+        ProductService productService = context.getBean(ProductServiceImpl.class);
+        Product product=productService.findById(theId);
+        //creating a variable to store the value of inventory
+        int inv = product.getInv();
+        if(inv == 0)
+        {
+            return "unsuccessfulbuynow";
+        }
+        else
+        {
+            return "successfulbuynow";
+        }
+    }
 }
