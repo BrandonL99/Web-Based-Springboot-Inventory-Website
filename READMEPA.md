@@ -204,18 +204,17 @@ AddProductController.java line 176-190 creates method for decrementing product's
     @GetMapping("/buyNow")
     public String buyNow(@RequestParam("productID") int theId, Model theModel) {
         ProductService productService = context.getBean(ProductServiceImpl.class);
-        Product product=productService.findById(theId);
-        //creating a variable to store the value of inventory
-        int inv = product.getInv();
-        if(inv == 0)
-        {
+        Product product = productService.findById(theId);
+
+        if (product.getInv() > 0) {
+            product.setInv(product.getInv() - 1);
+            productService.save(product);
+            return "successfulbuynow";
+        } else {
             return "unsuccessfulbuynow";
         }
-        else
-        {
-            return "successfulbuynow";
-        }
     }
+}
 ______________________________________________________________________________________________
 G. Modify the parts to track maximum and minimum inventory by doing the following: Add additional fields to the part entity for maximum and minimum inventory. Modify the sample inventory to include the maximum and minimum fields. Add to the InhousePartForm and OutsourcedPartForm forms additional text inputs for the inventory so the user can set the maximum and minimum values. Rename the file the persistent storage is saved to. Modify the code to enforce that the inventory is between or at the minimum and maximum value.
 
