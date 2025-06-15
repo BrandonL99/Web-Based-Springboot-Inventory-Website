@@ -52,7 +52,7 @@ public class AddProductController {
     public String submitForm(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult, Model theModel) {
         theModel.addAttribute("product", product);
 
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()) {
             ProductService productService = context.getBean(ProductServiceImpl.class);
             Product product2 = new Product();
             try {
@@ -68,11 +68,7 @@ public class AddProductController {
             theModel.addAttribute("availparts",availParts);
             theModel.addAttribute("assparts",product2.getParts());
             return "productForm";
-        }
- //       theModel.addAttribute("assparts", assparts);
- //       this.product=product;
-//        product.getParts().addAll(assparts);
-        else {
+        } else {
             ProductService repo = context.getBean(ProductServiceImpl.class);
             if(product.getId()!=0) {
                 Product product2 = repo.findById((int) product.getId());
@@ -176,16 +172,14 @@ public class AddProductController {
     @GetMapping("/buyNow")
     public String buyNow(@RequestParam("productID") int theId, Model theModel) {
         ProductService productService = context.getBean(ProductServiceImpl.class);
-        Product product=productService.findById(theId);
-        //creating a variable to store the value of inventory
-        int inv = product.getInv();
-        if(inv == 0)
-        {
-            return "unsuccessfulbuynow";
-        }
-        else
-        {
+        Product product = productService.findById(theId);
+
+        if (product.getInv() > 0) {
+            product.setInv(product.getInv() - 1);
+            productService.save(product);
             return "successfulbuynow";
+        } else {
+            return "unsuccessfulbuynow";
         }
     }
 }
