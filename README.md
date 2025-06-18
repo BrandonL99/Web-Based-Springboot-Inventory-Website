@@ -1,3 +1,3 @@
 Web Based Springboot Inventory Website
-/br
+
 A simple PC parts website built using HTML, CSS, and Java. It allows users to buy individual parts or custom-built PCs. Features include "Buy Now" buttons, "Add to Inventory" options, and an About page. The application is connected through controllers and validators.
